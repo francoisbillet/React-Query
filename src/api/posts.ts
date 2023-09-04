@@ -3,6 +3,6 @@ import { wait } from "./utils";
 
 export const getPosts = async (): Promise<Array<Post>> => {
   return wait(2000).then(() =>
-    fetch("/data/posts.json").then((res) => res.json())
+    fetch("http://localhost:3000/api/posts").then((res) => res.json())
   );
 };
