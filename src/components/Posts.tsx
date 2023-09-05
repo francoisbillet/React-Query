@@ -1,10 +1,49 @@
 import { useQuery } from "react-query";
 import { getPosts } from "../api/posts";
-import { Post } from "../types/posts";
+import { Post as TPost } from "../types/posts";
 
-export const Posts = () => {
-  const { data } = useQuery<Array<Post>>("posts", getPosts);
+interface PostsProps {
+  changeActivePostId: (postId: string) => void;
+}
 
-  console.log(data);
-  return <div className="text-emerald-400">Posts</div>;
+export const Posts = ({ changeActivePostId }: PostsProps) => {
+  const {
+    data: posts,
+    isLoading,
+    isError,
+    error,
+  } = useQuery<Array<TPost>, Error>("posts", getPosts);
+
+  function displayPosts() {
+    if (isLoading) {
+      return <span>Loading...</span>;
+    }
+
+    if (isError) {
+      return <span>Error: {error.message}</span>;
+    }
+
+    return (
+      <ul>
+        {posts?.map((post: TPost) => (
+          <li key={post.id}>
+            <a
+              href="#"
+              onClick={() => changeActivePostId(String(post.id))}
+              className="underline"
+            >
+              {post.title}
+            </a>
+          </li>
+        ))}
+      </ul>
+    );
+  }
+
+  return (
+    <>
+      <h1 className="font-bold">Posts</h1>
+      {displayPosts()}
+    </>
+  );
 };
