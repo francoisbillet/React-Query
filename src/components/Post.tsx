@@ -25,7 +25,7 @@ export const Post = ({ activePostId }: PostProps) => {
 
   return (
     <>
-      <h1 className="font-bold">{post?.title}</h1>
+      <h2 className="font-bold">{post?.title}</h2>
       <p>{post?.content}</p>
     </>
   );

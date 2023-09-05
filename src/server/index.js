@@ -1,9 +1,9 @@
 import express from "express";
-// import posts from "./data/posts.json" assert { type: "json" };
-// import users from "./data/users.json" assert { type: "json" };
 
 const app = express();
 const port = 3000;
+
+app.use(express.json());
 
 const posts = [
   {
@@ -30,34 +30,27 @@ app.get("/", (req, res) => {
   res.send("Hello there !");
 });
 
-// POSTS
-app.get("/api/posts", (_, res) => {
+app.get("/api/posts", (req, res) => {
   res.set("Access-Control-Allow-Origin", "*");
   setTimeout(() => res.send(posts), 1000);
 });
 
-app.get("/api/posts/:id", (req, res) => {
-  res.set("Access-Control-Allow-Origin", "*");
-  if (req.method === "GET") {
-    const post = posts.find((post) => post.id === +req.params.id);
-    setTimeout(() => res.send(post), 1000);
-  } else if (req.method === "UPDATE") {
-    console.log("req : ", req);
-    console.log("res : ", res);
-  }
+app.post("/api/posts", (req, res) => {
+  // req.set("Access-Control-Allow-Origin", "*");
+  const maxId = posts[posts.length - 1].id;
+  console.log("req.body : ", req.body);
+  // console.log({ ...req.body, id: maxId + 1 });
+  posts.push({ ...req.body, id: maxId + 1 });
+  // res.set("Access-Control-Allow-Origin", "*");
+  setTimeout(() => res.send(posts[posts.length - 1]), 1000);
+  // res.json({ requestBody: req.body });
 });
 
-// USERS
-// app.get("/api/users", (_, res) => {
-//   res.set("Access-Control-Allow-Origin", "*");
-//   setTimeout(() => res.send(users), 1000);
-// });
-
-// app.get("/api/users/:id", (req, res) => {
-//   res.set("Access-Control-Allow-Origin", "*");
-//   const user = users.find((user) => user.id === +req.params.id);
-//   setTimeout(() => res.send(user), 1000);
-// });
+app.get("/api/posts/:id", (req, res) => {
+  res.set("Access-Control-Allow-Origin", "*");
+  const post = posts.find((post) => post.id === +req.params.id);
+  setTimeout(() => res.send(post), 1000);
+});
 
 app.listen(port, () => {
   console.log(`Server started on port ${port}`);
