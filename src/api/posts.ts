@@ -15,9 +15,9 @@ export async function getPost(postId: number): Promise<Post> {
 export async function createPost(newPost: PostRequest): Promise<Post> {
   return fetch("http://localhost:3000/api/posts/", {
     method: "POST",
-    mode: "no-cors",
     headers: {
-      "Content-type": "application/json",
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
     },
     body: JSON.stringify(newPost),
   }).then((res) => res.json());

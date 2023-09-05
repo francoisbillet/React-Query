@@ -56,6 +56,7 @@ export const Posts = ({ changeActivePostId }: PostsProps) => {
       <div>
         <h2 className="font-bold">Add Post</h2>
         <CreatePostForm onSubmit={onSubmit} />
+        {mutation.isLoading && <div>Loading...</div>}
       </div>
     </div>
   );

@@ -1,9 +1,15 @@
 import express from "express";
+import cors from "cors";
 
 const app = express();
 const port = 3000;
 
+app.listen(port, () => {
+  console.log(`Server started on port ${port}`);
+});
+
 app.use(express.json());
+app.use(cors());
 
 const posts = [
   {
@@ -36,22 +42,14 @@ app.get("/api/posts", (req, res) => {
 });
 
 app.post("/api/posts", (req, res) => {
-  // req.set("Access-Control-Allow-Origin", "*");
   const maxId = posts[posts.length - 1].id;
   console.log("req.body : ", req.body);
-  // console.log({ ...req.body, id: maxId + 1 });
   posts.push({ ...req.body, id: maxId + 1 });
-  // res.set("Access-Control-Allow-Origin", "*");
   setTimeout(() => res.send(posts[posts.length - 1]), 1000);
-  // res.json({ requestBody: req.body });
 });
 
 app.get("/api/posts/:id", (req, res) => {
   res.set("Access-Control-Allow-Origin", "*");
   const post = posts.find((post) => post.id === +req.params.id);
   setTimeout(() => res.send(post), 1000);
-});
-
-app.listen(port, () => {
-  console.log(`Server started on port ${port}`);
 });
