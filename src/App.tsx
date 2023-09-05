@@ -7,7 +7,7 @@ import { Post } from "./components/Post";
 const queryClient = new QueryClient();
 
 function App() {
-  const [activePostId, setActivePostId] = useState<string>("");
+  const [activePostId, setActivePostId] = useState<number | null>(null);
 
   return (
     // Provides the client to the App
@@ -15,14 +15,14 @@ function App() {
       <div className="p-2">
         <a
           href="#"
-          onClick={() => setActivePostId("")}
+          onClick={() => setActivePostId(null)}
           className="underline text-blue-500"
         >
           All posts
         </a>
         <hr className="border-gray-600 my-1" />
         <main>
-          {activePostId === "" ? (
+          {!activePostId ? (
             <Posts changeActivePostId={setActivePostId} />
           ) : (
             <Post activePostId={activePostId} />

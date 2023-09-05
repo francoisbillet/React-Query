@@ -43,7 +43,6 @@ app.get("/api/posts", (req, res) => {
 
 app.post("/api/posts", (req, res) => {
   const maxId = posts[posts.length - 1].id;
-  console.log("req.body : ", req.body);
   posts.push({ ...req.body, id: maxId + 1 });
   setTimeout(() => res.send(posts[posts.length - 1]), 1000);
 });
