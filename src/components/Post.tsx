@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { Post as TPost } from "../types/posts";
 import { PostRequest, getPost, updatePost } from "../api/posts";
 import { PostForm } from "./PostForm";
@@ -8,16 +8,23 @@ interface PostProps {
 }
 
 export const Post = ({ activePostId }: PostProps) => {
+  const queryClient = useQueryClient();
+
   const {
     data: post,
     status,
     error,
-  } = useQuery<TPost, Error>(["post", activePostId], () =>
+  } = useQuery<TPost, Error>(["posts", activePostId], () =>
     getPost(activePostId)
   );
 
-  const mutation = useMutation((updatedPost: TPost) =>
-    updatePost(activePostId, updatedPost)
+  const mutation = useMutation(
+    (updatedPost: TPost) => updatePost(activePostId, updatedPost),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("posts");
+      },
+    }
   );
 
   if (status === "loading") {
@@ -48,6 +55,7 @@ export const Post = ({ activePostId }: PostProps) => {
           initialValues={{ title: post.title, content: post.content }}
           onSubmit={onSubmit}
         />
+        {mutation.isLoading && <div>Loading...</div>}
       </div>
     </>
   );

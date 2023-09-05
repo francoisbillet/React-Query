@@ -37,7 +37,6 @@ app.get("/", (req, res) => {
 });
 
 app.get("/api/posts", (req, res) => {
-  res.set("Access-Control-Allow-Origin", "*");
   setTimeout(() => res.send(posts), 1000);
 });
 
@@ -48,7 +47,26 @@ app.post("/api/posts", (req, res) => {
 });
 
 app.get("/api/posts/:id", (req, res) => {
-  res.set("Access-Control-Allow-Origin", "*");
   const post = posts.find((post) => post.id === +req.params.id);
   setTimeout(() => res.send(post), 1000);
+});
+
+app.put("/api/posts/:id", (req, res) => {
+  const postToUpdate = posts.find((post) => post.id === +req.params.id);
+  const indexToUpdate = posts.indexOf(postToUpdate);
+
+  const updatedPost = {
+    id: +req.params.id,
+    title: req.body.title,
+    content: req.body.content,
+  };
+  posts[indexToUpdate] = updatedPost;
+  setTimeout(() => res.send(updatedPost), 1000);
+});
+
+app.delete("/api/posts/:id", (req, res) => {
+  const postToDelete = posts.find((post) => post.id === +req.params.id);
+  const indexToDelete = posts.indexOf(postToDelete);
+  posts.splice(indexToDelete, 1);
+  setTimeout(() => res.sendStatus(200), 1000);
 });

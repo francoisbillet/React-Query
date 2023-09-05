@@ -17,6 +17,12 @@ export function Posts({ changeActivePostId }: PostsProps) {
     error,
   } = useQuery<Array<TPost>, Error>("posts", getPosts);
 
+  const mutation = useMutation((newPost: PostRequest) => createPost(newPost), {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+    },
+  });
+
   function displayPosts() {
     if (isLoading) {
       return <span>Loading...</span>;
@@ -42,12 +48,6 @@ export function Posts({ changeActivePostId }: PostsProps) {
       </ul>
     );
   }
-
-  const mutation = useMutation((newPost: PostRequest) => createPost(newPost), {
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["posts"] });
-    },
-  });
 
   function onSubmit(values: PostRequest) {
     mutation.mutate(values);

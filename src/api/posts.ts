@@ -17,7 +17,6 @@ export async function createPost(newPost: PostRequest): Promise<Post> {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
     },
     body: JSON.stringify(newPost),
   }).then((res) => res.json());
@@ -29,6 +28,9 @@ export async function updatePost(
 ): Promise<Post> {
   return fetch(`http://localhost:3000/api/posts/${postId}`, {
     method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify(updatedPost),
   }).then((res) => res.json());
 }
