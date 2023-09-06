@@ -3,6 +3,7 @@ import { ReactQueryDevtools } from "react-query/devtools";
 import { Posts } from "./components/Posts";
 import { useState } from "react";
 import { Post } from "./components/Post";
+import { usePosts } from "./hooks/usePosts";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -26,6 +27,7 @@ function App() {
           >
             All posts
           </a>
+          <Stats />
         </div>
 
         <hr className="border-gray-600 my-1" />
@@ -40,6 +42,19 @@ function App() {
       <ReactQueryDevtools />
     </QueryClientProvider>
   );
+}
+
+function Stats() {
+  const { posts, status } = usePosts();
+
+  function displayTotalPosts() {
+    if (status === "loading") {
+      return "...";
+    }
+    return posts.length;
+  }
+
+  return <p>Total Posts : {displayTotalPosts()}</p>;
 }
 
 export default App;
