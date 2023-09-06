@@ -15,7 +15,7 @@ export function useCreatePost() {
       }).then((res) => res.json()),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ["posts"] });
+        queryClient.invalidateQueries({ queryKey: ["posts"], exact: true });
       },
     }
   );
