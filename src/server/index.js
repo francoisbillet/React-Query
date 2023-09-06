@@ -61,6 +61,7 @@ app.put("/api/posts/:id", (req, res) => {
     content: req.body.content,
   };
   posts[indexToUpdate] = updatedPost;
+
   setTimeout(() => res.send(updatedPost), 1000);
 });
 
@@ -68,5 +69,6 @@ app.delete("/api/posts/:id", (req, res) => {
   const postToDelete = posts.find((post) => post.id === +req.params.id);
   const indexToDelete = posts.indexOf(postToDelete);
   posts.splice(indexToDelete, 1);
+
   setTimeout(() => res.sendStatus(200), 1000);
 });

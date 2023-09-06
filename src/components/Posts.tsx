@@ -1,45 +1,33 @@
-import { useMutation, useQuery, useQueryClient } from "react-query";
-import { PostRequest, createPost, getPosts } from "../api/posts";
-import { Post as TPost } from "../types/posts";
+import { PostRequest, Post as TPost } from "../types/posts";
 import { PostForm } from "./PostForm";
+import { usePosts } from "../hooks/usePosts";
+import { useCreatePost } from "../hooks/useCreatePost";
 
 interface PostsProps {
   changeActivePostId: (postId: number) => void;
 }
 
 export function Posts({ changeActivePostId }: PostsProps) {
-  const queryClient = useQueryClient();
-
-  const {
-    data: posts,
-    isLoading,
-    isError,
-    error,
-  } = useQuery<Array<TPost>, Error>("posts", getPosts);
-
-  const mutation = useMutation((newPost: PostRequest) => createPost(newPost), {
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["posts"] });
-    },
-  });
+  const { posts, status, error } = usePosts();
+  const mutation = useCreatePost();
 
   function displayPosts() {
-    if (isLoading) {
+    if (status === "loading") {
       return <span>Loading...</span>;
     }
 
-    if (isError) {
-      return <span>Error: {error.message}</span>;
+    if (status === "error") {
+      return <span>Error : {error?.message}</span>;
     }
 
     return (
       <ul>
-        {posts?.map((post: TPost) => (
+        {posts.map((post: TPost) => (
           <li key={post.id}>
             <a
               href="#"
               onClick={() => changeActivePostId(post.id)}
-              className="underline"
+              className="underline text-blue-500"
             >
               {post.title}
             </a>

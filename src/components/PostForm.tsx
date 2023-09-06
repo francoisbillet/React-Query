@@ -1,5 +1,5 @@
 import { SyntheticEvent, useState } from "react";
-import { PostRequest } from "../api/posts";
+import { PostRequest } from "../types/posts";
 
 interface PostFormProps {
   onSubmit: (values: PostRequest) => void;
