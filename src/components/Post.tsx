@@ -5,7 +5,7 @@ interface PostProps {
 }
 
 export const Post = ({ activePostId }: PostProps) => {
-  const { data: post, status, error } = usePost(activePostId);
+  const { data: post, status, error, isFetching } = usePost(activePostId);
 
   if (status === "loading") {
     return <span>Loading...</span>;
@@ -17,7 +17,10 @@ export const Post = ({ activePostId }: PostProps) => {
 
   return (
     <>
-      <h2 className="font-bold">{post?.title}</h2>
+      <div className="flex gap-1 items-center">
+        <h2 className="font-bold">{post?.title}</h2>
+        {isFetching && <small>Updating...</small>}
+      </div>
       <p>{post?.content}</p>
     </>
   );

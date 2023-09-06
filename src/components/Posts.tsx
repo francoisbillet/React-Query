@@ -8,7 +8,7 @@ interface PostsProps {
 }
 
 export function Posts({ changeActivePostId }: PostsProps) {
-  const { posts, status, error } = usePosts();
+  const { posts, status, error, isFetching } = usePosts();
   const { mutate: createPost, status: createPostStatus } = useCreatePost();
 
   function displayPosts() {
@@ -44,7 +44,10 @@ export function Posts({ changeActivePostId }: PostsProps) {
   return (
     <div className="flex flex-col gap-2">
       <div>
-        <h2 className="font-bold">Posts </h2>
+        <div className="flex items-center gap-2">
+          <h2 className="font-bold">Posts </h2>
+          {isFetching && <small>Updating...</small>}
+        </div>
         {displayPosts()}
       </div>
       <hr className="border-gray-600 my-1" />

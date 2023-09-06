@@ -45,7 +45,7 @@ function App() {
 }
 
 function Stats() {
-  const { posts, status } = usePosts();
+  const { posts, status, isFetching } = usePosts();
 
   function displayTotalPosts() {
     if (status === "loading") {
@@ -54,7 +54,12 @@ function Stats() {
     return posts.length;
   }
 
-  return <p>Total Posts : {displayTotalPosts()}</p>;
+  return (
+    <p>
+      Total Posts : {displayTotalPosts()}{" "}
+      {isFetching && <small>Updating...</small>}
+    </p>
+  );
 }
 
 export default App;
