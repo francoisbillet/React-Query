@@ -1,15 +1,12 @@
-import { PostRequest, Post as TPost } from "../types/posts";
-import { PostForm } from "./PostForm";
+import { Post as TPost } from "../types/posts";
 import { usePosts } from "../hooks/usePosts";
-import { useCreatePost } from "../hooks/useCreatePost";
 
 interface PostsProps {
   changeActivePostId: (postId: number) => void;
 }
 
 export function Posts({ changeActivePostId }: PostsProps) {
-  const { posts, status, error, isFetching } = usePosts();
-  const { mutate: createPost, status: createPostStatus } = useCreatePost();
+  const { posts, status, error } = usePosts();
 
   function displayPosts() {
     if (status === "loading") {
@@ -37,26 +34,11 @@ export function Posts({ changeActivePostId }: PostsProps) {
     );
   }
 
-  function onSubmit(values: PostRequest) {
-    createPost(values);
-  }
-
   return (
     <div className="flex flex-col gap-2">
       <div>
-        <h2 className="font-bold">
-          Posts{" "}
-          {isFetching ? (
-            <small className="font-normal">updating...</small>
-          ) : null}
-        </h2>
+        <h2 className="font-bold">Posts</h2>
         {displayPosts()}
-      </div>
-      <hr className="border-gray-600 my-1" />
-      <div>
-        <h2 className="font-bold">Add Post</h2>
-        <PostForm onSubmit={onSubmit} />
-        {createPostStatus === "loading" && <div>Loading...</div>}
       </div>
     </div>
   );
