@@ -63,6 +63,7 @@ app.put("/api/posts/:id", (req, res) => {
   posts[indexToUpdate] = updatedPost;
 
   setTimeout(() => res.send(updatedPost), 1000);
+  // setTimeout(() => res.sendStatus(500), 1000);
 });
 
 app.delete("/api/posts/:id", (req, res) => {
