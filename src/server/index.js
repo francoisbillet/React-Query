@@ -69,6 +69,5 @@ app.delete("/api/posts/:id", (req, res) => {
   const postToDelete = posts.find((post) => post.id === +req.params.id);
   const indexToDelete = posts.indexOf(postToDelete);
   posts.splice(indexToDelete, 1);
-
   setTimeout(() => res.sendStatus(200), 1000);
 });

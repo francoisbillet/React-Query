@@ -1,21 +1,19 @@
 import { useMutation, useQueryClient } from "react-query";
-import { Post } from "../types/posts";
 
-export function useUpdatePost(postId: number) {
+export function useDeletePost() {
   const queryClient = useQueryClient();
 
   return useMutation(
-    (updatedPost: Post) =>
+    (postId: number) =>
       fetch(`http://localhost:3000/api/posts/${postId}`, {
-        method: "PUT",
+        method: "DELETE",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(updatedPost),
       }).then((res) => res.json()),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries("posts");
+        return queryClient.invalidateQueries("posts");
       },
     }
   );

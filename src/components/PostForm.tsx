@@ -42,7 +42,7 @@ export function PostForm({
           className="border"
         />
       </div>
-      <button type="submit" className="border">
+      <button type="submit" className="bg-amber-400 p-1">
         Submit
       </button>
     </form>

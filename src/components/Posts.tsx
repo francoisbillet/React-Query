@@ -8,8 +8,8 @@ interface PostsProps {
 }
 
 export function Posts({ changeActivePostId }: PostsProps) {
-  const { posts, status, error } = usePosts();
-  const mutation = useCreatePost();
+  const { posts, status, error, isFetching } = usePosts();
+  const { mutate: createPost, status: createPostStatus } = useCreatePost();
 
   function displayPosts() {
     if (status === "loading") {
@@ -38,20 +38,25 @@ export function Posts({ changeActivePostId }: PostsProps) {
   }
 
   function onSubmit(values: PostRequest) {
-    mutation.mutate(values);
+    createPost(values);
   }
 
   return (
     <div className="flex flex-col gap-2">
       <div>
-        <h2 className="font-bold">Posts</h2>
+        <h2 className="font-bold">
+          Posts{" "}
+          {isFetching ? (
+            <small className="font-normal">updating...</small>
+          ) : null}
+        </h2>
         {displayPosts()}
       </div>
       <hr className="border-gray-600 my-1" />
       <div>
         <h2 className="font-bold">Add Post</h2>
         <PostForm onSubmit={onSubmit} />
-        {mutation.isLoading && <div>Loading...</div>}
+        {createPostStatus === "loading" && <div>Loading...</div>}
       </div>
     </div>
   );
