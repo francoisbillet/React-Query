@@ -15,7 +15,7 @@ export function useUpdatePost(postId: number) {
       }).then((res) => res.json()),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries("posts");
+        queryClient.invalidateQueries(["posts"]);
       },
     }
   );
