@@ -35,7 +35,10 @@ function App() {
           {!activePostId ? (
             <Posts changeActivePostId={setActivePostId} />
           ) : (
-            <Post activePostId={activePostId} />
+            <Post
+              activePostId={activePostId}
+              changeActivePostId={setActivePostId}
+            />
           )}
         </main>
       </div>
@@ -45,19 +48,19 @@ function App() {
 }
 
 function Stats() {
-  const { posts, status, isFetching } = usePosts();
+  const getPosts = usePosts();
 
   function displayTotalPosts() {
-    if (status === "loading") {
+    if (getPosts.status === "loading") {
       return "...";
     }
-    return posts.length;
+    return getPosts.data?.length;
   }
 
   return (
     <p>
       Total Posts : {displayTotalPosts()}{" "}
-      {isFetching && <small>Updating...</small>}
+      {getPosts.isFetching && <small>Updating...</small>}
     </p>
   );
 }

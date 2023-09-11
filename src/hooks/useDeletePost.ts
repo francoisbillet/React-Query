@@ -7,13 +7,13 @@ export function useDeletePost() {
     (postId: number) =>
       fetch(`http://localhost:3000/api/posts/${postId}`, {
         method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
       }).then((res) => res.json()),
     {
       onSuccess: () => {
-        return queryClient.invalidateQueries("posts");
+        return queryClient.invalidateQueries({
+          queryKey: ["posts"],
+          exact: true,
+        });
       },
     }
   );

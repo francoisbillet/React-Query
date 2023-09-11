@@ -37,18 +37,18 @@ app.get("/", (req, res) => {
 });
 
 app.get("/api/posts", (req, res) => {
-  setTimeout(() => res.send(posts), 1000);
+  setTimeout(() => res.json(posts), 1000);
 });
 
 app.post("/api/posts", (req, res) => {
   const maxId = posts[posts.length - 1].id;
   posts.push({ ...req.body, id: maxId + 1 });
-  setTimeout(() => res.send(posts[posts.length - 1]), 1000);
+  setTimeout(() => res.json(posts[posts.length - 1]), 1000);
 });
 
 app.get("/api/posts/:id", (req, res) => {
   const post = posts.find((post) => post.id === +req.params.id);
-  setTimeout(() => res.send(post), 1000);
+  setTimeout(() => res.json(post), 1000);
 });
 
 app.put("/api/posts/:id", (req, res) => {
@@ -62,7 +62,7 @@ app.put("/api/posts/:id", (req, res) => {
   };
   posts[indexToUpdate] = updatedPost;
 
-  setTimeout(() => res.send(updatedPost), 1000);
+  setTimeout(() => res.json(updatedPost), 1000);
   // setTimeout(() => res.sendStatus(500), 1000);
 });
 
@@ -70,5 +70,6 @@ app.delete("/api/posts/:id", (req, res) => {
   const postToDelete = posts.find((post) => post.id === +req.params.id);
   const indexToDelete = posts.indexOf(postToDelete);
   posts.splice(indexToDelete, 1);
-  setTimeout(() => res.sendStatus(200), 1000);
+  // setTimeout(() => res.sendStatus(200), 1000);
+  setTimeout(() => res.json(postToDelete.id), 1000);
 });

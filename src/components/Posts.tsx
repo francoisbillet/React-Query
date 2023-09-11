@@ -8,21 +8,21 @@ interface PostsProps {
 }
 
 export function Posts({ changeActivePostId }: PostsProps) {
-  const { posts, status, error, isFetching } = usePosts();
-  const { mutate: createPost, status: createPostStatus } = useCreatePost();
+  const getPosts = usePosts();
+  const createPost = useCreatePost();
 
   function displayPosts() {
-    if (status === "loading") {
+    if (getPosts.status === "loading") {
       return <span>Loading...</span>;
     }
 
-    if (status === "error") {
-      return <span>Error : {error?.message}</span>;
+    if (getPosts.status === "error") {
+      return <span>Error : {getPosts.error?.message}</span>;
     }
 
     return (
       <ul>
-        {posts.map((post: TPost) => (
+        {getPosts.data?.map((post: TPost) => (
           <li key={post.id}>
             <a
               href="#"
@@ -38,7 +38,7 @@ export function Posts({ changeActivePostId }: PostsProps) {
   }
 
   function onSubmit(values: PostRequest) {
-    createPost(values);
+    createPost.mutate(values);
   }
 
   return (
@@ -46,7 +46,7 @@ export function Posts({ changeActivePostId }: PostsProps) {
       <div>
         <div className="flex items-center gap-2">
           <h2 className="font-bold">Posts </h2>
-          {isFetching && <small>Updating...</small>}
+          {getPosts.isFetching && <small>Updating...</small>}
         </div>
         {displayPosts()}
       </div>
@@ -54,7 +54,7 @@ export function Posts({ changeActivePostId }: PostsProps) {
       <div>
         <h2 className="font-bold">Add Post</h2>
         <PostForm onSubmit={onSubmit} />
-        {createPostStatus === "loading" && <div>Loading...</div>}
+        {createPost.status === "loading" && <div>Loading...</div>}
       </div>
     </div>
   );
