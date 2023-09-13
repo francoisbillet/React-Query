@@ -52,6 +52,14 @@ app.get("/api/posts/:id", (req, res) => {
 });
 
 app.put("/api/posts/:id", (req, res) => {
+  if (req.body.content === "" || req.body.title === "") {
+    setTimeout(
+      () => res.status(400).send(JSON.stringify("invalid data")),
+      1000
+    );
+    return;
+  }
+
   const postToUpdate = posts.find((post) => post.id === +req.params.id);
   const indexToUpdate = posts.indexOf(postToUpdate);
 
@@ -63,13 +71,12 @@ app.put("/api/posts/:id", (req, res) => {
   posts[indexToUpdate] = updatedPost;
 
   setTimeout(() => res.json(updatedPost), 1000);
-  // setTimeout(() => res.sendStatus(500), 1000);
 });
 
 app.delete("/api/posts/:id", (req, res) => {
   const postToDelete = posts.find((post) => post.id === +req.params.id);
   const indexToDelete = posts.indexOf(postToDelete);
   posts.splice(indexToDelete, 1);
-  // setTimeout(() => res.sendStatus(200), 1000);
+  // setTimeout(() => res.sendStatus(500), 1000);
   setTimeout(() => res.json(postToDelete.id), 1000);
 });
